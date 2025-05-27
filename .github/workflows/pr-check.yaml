@@ -23,22 +23,22 @@ on:
       - build-extension
     types:
       - completed
-
+      
 jobs:
   push-extension:
     name: Push OCI image to ghcr
-    runs-on: ubuntu-22.04c
-    if: |
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.event == 'pull_request'
-    env:
-      IMAGE: ${{ needs.build-extension.outputs.image }}
+    runs-on: ubuntu-22.04
     steps:
       - name: Download extension oci flatten images
         uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
         with:
           name: podman-desktop-image-checker-openshift-ext
           
+      - name: Read image name
+        id: read-image
+        run: |
+          echo "IMAGE=$(cat podman-desktop-image-checker-openshift-ext.image)" >> "$GITHUB_ENV" 
+
       - name: Log in to ghcr.io
         uses: redhat-actions/podman-login@4934294ad0449894bcd1e9f191899d7292469603 # v1.7
         with:

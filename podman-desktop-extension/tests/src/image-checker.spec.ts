@@ -177,7 +177,7 @@ test.describe.serial('Red Hat Image Checker extension functionality', () => {
       await playExpect(checkChown).toBeVisible();
       const checkUser = await imageDetailsPage.getAnalysisResult('User set to root');
       await playExpect(checkUser).toBeVisible();
-      // TODO: create custom image to test specific directives, instead of using httpd
+      // TODO: create custom image to test specific directives, instead of using httpd 
     }
   });
 });

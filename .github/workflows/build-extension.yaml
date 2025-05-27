@@ -22,6 +22,7 @@ on:
   pull_request:
     branches: [ 'main' ]
 
+
 jobs:
   build-extension:
     name: Build OCI image
@@ -35,14 +36,13 @@ jobs:
       - name: Set image env var
         id: set-image
         run: |
-          IMAGE="ghcr.io/${GITHUB_REPOSITORY_OWNER}/podman-desktop-image-checker-openshift-ext:pr-${{ github.event.pull_request.number }}"
-          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
-          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+          echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY_OWNER}/podman-desktop-image-checker-openshift-ext:pr-${{ github.event.pull_request.number }}" >> "$GITHUB_ENV"
+          echo "image=ghcr.io/${GITHUB_REPOSITORY_OWNER}/podman-desktop-image-checker-openshift-ext:pr-${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
       
       - name: Build image with podman
         shell: bash
         run: |
-          podman build -t "${IMAGE}" -f Containerfile .
+          podman build -t "${IMAGE}" -f Containerfile . 
           podman save -m -o podman-desktop-image-checker-openshift-ext.tar "${IMAGE}"
           echo "${IMAGE}" > podman-desktop-image-checker-openshift-ext.image
 
